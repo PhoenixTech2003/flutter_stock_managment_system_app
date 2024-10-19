@@ -1,47 +1,29 @@
-
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_stock_managment_system_app/utils/api_definitions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stock_managment_system_app/utils/data.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SalesBarChart extends StatefulWidget {
+class SalesBarChart extends ConsumerWidget {
   const SalesBarChart({super.key});
-
   @override
-  State<SalesBarChart> createState() => _SalesBarChartState();
-}
-
-class _SalesBarChartState extends State<SalesBarChart> {
-   late Future<Summary> futureSummary;
-
-  @override
-  void initState() {
-    super.initState();
-    futureSummary = fetchSummary();
-  }
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final AsyncValue<Summary> summary = ref.watch(fetchSummaryProvider);
     return Container(
-      child: FutureBuilder<Summary>(
-        future: futureSummary,
-        builder: (context, snapshot){
-          if(snapshot.hasData){
-                   return (BarChart(
+      child: switch (summary) {
+        AsyncData(:final value) => (BarChart(
             BarChartData(
-              gridData: const FlGridData(
-                drawVerticalLine: false
-              ),
+                gridData: const FlGridData(drawVerticalLine: false),
                 titlesData: FlTitlesData(
-                    rightTitles:
-                        const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles:
-                        const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false)),
+                    topTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false)),
                     leftTitles: const AxisTitles(
-                      
                         axisNameWidget: Text("Monthly Sales"),
                         axisNameSize: 30,
-                        sideTitles: SideTitles(showTitles: true, reservedSize: 100)),
+                        sideTitles:
+                            SideTitles(showTitles: true, reservedSize: 100)),
                     bottomTitles: AxisTitles(
                         axisNameWidget: const Text("Months"),
                         axisNameSize: 30,
@@ -67,20 +49,22 @@ class _SalesBarChartState extends State<SalesBarChart> {
                           },
                         ))),
                 barGroups: [
-                  for(Map chartData in  snapshot.data!.chartData )
-                  BarChartGroupData(x: chartData["monthIndex"] as int, barRods: [BarChartRodData(toY: (chartData["total_sales"] as num).toDouble())]),
-                  
+                  for (Map chartData in value.chartData)
+                    BarChartGroupData(
+                        x: chartData["monthIndex"] as int,
+                        barRods: [
+                          BarChartRodData(
+                              toY: (chartData["total_sales"] as num).toDouble())
+                        ]),
                 ]
                 // read about it in the BarChartData section
                 ),
             // Optional
-          ));
-          }else if(snapshot.hasError){
-            return Text("${snapshot.error}");
-          }
-          return const CircularProgressIndicator();
-        },
-      ),
+          )),
+        AsyncError() =>
+          const Text("An error occured while fetching chart data"),
+        _ => const CircularProgressIndicator()
+      },
     );
   }
 }
