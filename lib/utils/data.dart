@@ -86,4 +86,26 @@ class InventoryItems extends _$InventoryItems {
       return false;
     }
   }
+
+  Future<bool> addProduct(Map<String, dynamic> item) async {
+    final response =
+        await http.post(Uri.parse("http://localhost:9000/v1/inventory/"),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, String>{
+              'product_name': item["Product Name"],
+              'quantity': item["Quantity"],
+              'price': item["Selling Price"],
+              "reorder_level": item["Reorder Level"],
+              "cost_price": item["Cost Price"],
+            }));
+    if (response.statusCode == 200) {
+      ref.invalidateSelf();
+      await future;
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
