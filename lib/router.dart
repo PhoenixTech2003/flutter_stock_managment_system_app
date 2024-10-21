@@ -1,3 +1,4 @@
+import 'package:flutter_stock_managment_system_app/pages/add_inventory.dart';
 import 'package:flutter_stock_managment_system_app/pages/edit_inventory.dart';
 import 'package:flutter_stock_managment_system_app/pages/reports.dart';
 import 'package:flutter_stock_managment_system_app/pages/users.dart';
@@ -18,7 +19,8 @@ final router = GoRouter(
               GoRoute(
                 path: "/:productId",
                 builder: (context, state) => const EditInventoryPage(),
-              )
+              ),
+              GoRoute(path: "/section/add-item", builder: (context, state) => const AddInventoryPage(),)
             ]),
         GoRoute(
           path: "/reports",
