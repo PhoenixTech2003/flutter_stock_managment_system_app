@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_stock_managment_system_app/utils/data.dart';
 import 'package:go_router/go_router.dart';
@@ -95,7 +96,13 @@ class EditFormState extends ConsumerState<EditForm> {
                         autoCloseDuration: const Duration(seconds: 4),
                         borderRadius: BorderRadius.circular(12.0),
                       );
-                      context.go("/inventory");
+                      if (mounted) {
+                        SchedulerBinding.instance.addPostFrameCallback((_) {
+                          if (mounted) {
+                            context.go("/inventory");
+                          }
+                        });
+                      }
                     } else {
                       toastification.show(
                         type: ToastificationType.error,
