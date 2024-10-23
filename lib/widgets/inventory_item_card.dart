@@ -51,49 +51,63 @@ class InventoryItemCard extends ConsumerWidget {
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(
-                  onPressed: () => showDialog(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: Text(
-                          "Do you want to delete ${value.inventoryItems[index]["product_name"]}"),
-                      content: Text(
-                          "This action will permanently delete ${value.inventoryItems[index]["product_name"]} "),
-                      actions: [
-                        FilledButton(
-                            onPressed: () {
-                              ref
-                                  .read(inventoryItemsProvider.notifier)
-                                  .deleteInventoryItem(value
-                                      .inventoryItems[index]["product_id"]);
-                              context.go("/inventory");
-                              Navigator.of(context).pop();
-                            },
-                            style: FilledButton.styleFrom(
-                                backgroundColor: Colors.red),
-                            child: const Text("Delete")),
-                        OutlinedButton(
-                            onPressed: () => {
-                                  context.go("/inventory"),
-                                  Navigator.of(context).pop()
+                Expanded(
+                  flex: 8,
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: Text(
+                              "Do you want to delete ${value.inventoryItems[index]["product_name"]}"),
+                          content: Text(
+                              "This action will permanently delete ${value.inventoryItems[index]["product_name"]} "),
+                          actions: [
+                            FilledButton(
+                                onPressed: () {
+                                  ref
+                                      .read(inventoryItemsProvider.notifier)
+                                      .deleteInventoryItem(value
+                                          .inventoryItems[index]["product_id"]);
+                                  context.go("/inventory");
+                                  Navigator.of(context).pop();
                                 },
-                            child: const Text("Cancel"))
-                      ],
+                                style: FilledButton.styleFrom(
+                                    backgroundColor: Colors.red),
+                                child: const Text("Delete")),
+                            OutlinedButton(
+                                onPressed: () => {
+                                      context.go("/inventory"),
+                                      Navigator.of(context).pop()
+                                    },
+                                child: const Text("Cancel"))
+                          ],
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.delete,
+                        size: 40,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
                     ),
                   ),
-                  child: Icon(
-                    Icons.delete,
-                    size: 40,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+                
+                Expanded(
+                  flex: 4,
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () => context.go(
+                          "/inventory/${value.inventoryItems[index]["product_id"]}"),
+                      child: Icon(
+                        Icons.edit,
+                        size: 40,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Icon(
-                  Icons.edit,
-                  size: 40,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
                 )
               ],
             ))

@@ -1,3 +1,5 @@
+import 'package:flutter_stock_managment_system_app/pages/add_inventory.dart';
+import 'package:flutter_stock_managment_system_app/pages/edit_inventory.dart';
 import 'package:flutter_stock_managment_system_app/pages/reports.dart';
 import 'package:flutter_stock_managment_system_app/pages/users.dart';
 import 'package:go_router/go_router.dart';
@@ -11,9 +13,15 @@ final router = GoRouter(
       routes: [
         GoRoute(path: "/", builder: (context, state) => const HomePage()),
         GoRoute(
-          path: "/inventory",
-          builder: (context, state) => const InventoryPage(),
-        ),
+            path: "/inventory",
+            builder: (context, state) => const InventoryPage(),
+            routes: [
+              GoRoute(
+                path: "/:productId",
+                builder: (context, state) => const EditInventoryPage(),
+              ),
+              GoRoute(path: "/section/add-item", builder: (context, state) => const AddInventoryPage(),)
+            ]),
         GoRoute(
           path: "/reports",
           builder: (context, state) => const ReportsPage(),
@@ -29,7 +37,8 @@ final router = GoRouter(
           backgroundColor: Theme.of(context).colorScheme.primaryContainer,
           destinations: const [
             NavigationDestination(icon: Icon(Icons.dashboard), label: "Home"),
-            NavigationDestination(icon: Icon(Icons.inventory), label: "Inventory"),
+            NavigationDestination(
+                icon: Icon(Icons.inventory), label: "Inventory"),
             NavigationDestination(icon: Icon(Icons.book), label: "Reports"),
             NavigationDestination(icon: Icon(Icons.people), label: "Users"),
           ],
@@ -49,17 +58,23 @@ final router = GoRouter(
                 break;
             }
           },
-          selectedIndex: state.uri.toString() == '/'
-              ? 0
-              : state.uri.toString() == '/inventory'
-                  ? 1
-                  : state.uri.toString() == '/reports'
-                      ? 2
-                      : state.uri.toString() == '/users'
-                          ? 3
-                          : 0,
+          selectedIndex: _getSelectedIndex(state.uri.toString()),
         ),
       ),
     ),
   ],
 );
+
+int _getSelectedIndex(String uri) {
+  if (uri == '/') {
+    return 0;
+  } else if (uri.startsWith('/inventory')) {
+    return 1;
+  } else if (uri.startsWith('/reports')) {
+    return 2;
+  } else if (uri.startsWith('/users')) {
+    return 3;
+  } else {
+    return 0;
+  }
+}

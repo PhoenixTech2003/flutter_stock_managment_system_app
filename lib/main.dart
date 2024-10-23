@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stock_managment_system_app/theme.dart';
 import 'package:flutter_stock_managment_system_app/router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:toastification/toastification.dart';
 
 void main() {
   runApp(const ProviderScope(
-    child: MyApp(),
+    child: ToastificationWrapper(child: MyApp()),
   ));
 }
 
@@ -23,8 +23,3 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
-
-
-
-
-

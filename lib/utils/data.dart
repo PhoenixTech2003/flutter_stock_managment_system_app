@@ -50,4 +50,62 @@ class InventoryItems extends _$InventoryItems {
       throw Exception("Failed to delete item");
     }
   }
+
+  Future<AsyncValue<InventoryGet>> getInventoryItemById(
+      String productId) async {
+    return AsyncValue.guard(() async {
+      final response = await http
+          .get(Uri.parse("http://localhost:9000/v1/inventory/$productId"));
+      if (response.statusCode == 200) {
+        return InventoryGet.fromJson(
+            jsonDecode(response.body) as List<dynamic>);
+      } else {
+        throw Exception("Failed to fetch product data");
+      }
+    });
+  }
+
+  Future<bool> updateProduct(Map<String, dynamic> item) async {
+    final response = await http.put(
+        Uri.parse("http://localhost:9000/v1/inventory/${item["id"]}"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'id': item["product_id"],
+          'product_name': item["product_name"],
+          'quantity': item["product_qty"],
+          'price': item["selling_price"],
+          "reorder_level": item["reorder_level"],
+        }));
+    if (response.statusCode == 200) {
+      ref.invalidateSelf();
+      await future;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> addProduct(Map<String, dynamic> item) async {
+    final response =
+        await http.post(Uri.parse("http://localhost:9000/v1/inventory/"),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, String>{
+              'product_name': item["Product Name"],
+              'quantity': item["Quantity"],
+              'price': item["Selling Price"],
+              "reorder_level": item["Reorder Level"],
+              "cost_price": item["Cost Price"],
+            }));
+    if (response.statusCode == 200) {
+      ref.invalidateSelf();
+      await future;
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
