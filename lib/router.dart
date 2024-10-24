@@ -1,4 +1,5 @@
 import 'package:flutter_stock_managment_system_app/pages/add_inventory.dart';
+import 'package:flutter_stock_managment_system_app/pages/daily_sales.dart';
 import 'package:flutter_stock_managment_system_app/pages/edit_inventory.dart';
 import 'package:flutter_stock_managment_system_app/pages/reports.dart';
 import 'package:flutter_stock_managment_system_app/pages/users.dart';
@@ -20,12 +21,20 @@ final router = GoRouter(
                 path: "/:productId",
                 builder: (context, state) => const EditInventoryPage(),
               ),
-              GoRoute(path: "/section/add-item", builder: (context, state) => const AddInventoryPage(),)
+              GoRoute(
+                path: "/section/add-item",
+                builder: (context, state) => const AddInventoryPage(),
+              )
             ]),
         GoRoute(
-          path: "/reports",
-          builder: (context, state) => const ReportsPage(),
-        ),
+            path: "/reports",
+            builder: (context, state) => const ReportsPage(),
+            routes: [
+              GoRoute(
+                path: "daily_sales",
+                builder: (context, state) => const DailySales(),
+              )
+            ]),
         GoRoute(
           path: "/users",
           builder: (context, state) => const UsersPage(),
