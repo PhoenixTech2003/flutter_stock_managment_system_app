@@ -20,7 +20,7 @@ final fetchSummaryProvider = AutoDisposeFutureProvider<Summary>.internal(
 );
 
 typedef FetchSummaryRef = AutoDisposeFutureProviderRef<Summary>;
-String _$inventoryItemsHash() => r'13050e418e446d49de36909c0b6add78a6dc4284';
+String _$inventoryItemsHash() => r'a2b446c05c393fc48b83b2fb5bb029f50d99a443';
 
 /// See also [InventoryItems].
 @ProviderFor(InventoryItems)
@@ -36,5 +36,20 @@ final inventoryItemsProvider =
 );
 
 typedef _$InventoryItems = AutoDisposeAsyncNotifier<InventoryGet>;
+String _$dailySalesHash() => r'1d7a3b0b5da4c5005b2f636a2ed51fa361caa85c';
+
+/// See also [DailySales].
+@ProviderFor(DailySales)
+final dailySalesProvider =
+    AutoDisposeAsyncNotifierProvider<DailySales, DailySalesGet>.internal(
+  DailySales.new,
+  name: r'dailySalesProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$dailySalesHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$DailySales = AutoDisposeAsyncNotifier<DailySalesGet>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
