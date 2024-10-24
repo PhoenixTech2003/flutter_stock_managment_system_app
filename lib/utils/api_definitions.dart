@@ -30,3 +30,13 @@ class InventoryGet {
     return InventoryGet(inventoryItems: json);
   }
 }
+
+class DailySalesGet{
+  final List<dynamic> dailySales;
+
+  const DailySalesGet({required this.dailySales});
+
+  factory DailySalesGet.fromJson(List<dynamic> json) {
+    return DailySalesGet(dailySales: json);
+  }
+}
