@@ -109,3 +109,18 @@ class InventoryItems extends _$InventoryItems {
     }
   }
 }
+
+
+@riverpod
+class DailySales extends _$DailySales{
+  @override
+  Future<DailySalesGet> build() async{
+    final response = await http.get(Uri.parse("http://localhost:9000/v1/sales/daily-sales"));
+    if (response.statusCode == 200){
+      return DailySalesGet.fromJson(jsonDecode(response.body) as List<dynamic>);
+    }else{
+      throw Exception("An error occured while fetching data for daily sales");
+    }
+  }
+  
+}
