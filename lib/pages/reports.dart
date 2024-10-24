@@ -39,13 +39,15 @@ class ReportsPage extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Expanded(
-                  child: Text(
-                "Reports",
-                style: Theme.of(context).textTheme.headlineSmall,
-              ))),
+          Expanded(
+            flex: 1,
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Reports",
+                  style: Theme.of(context).textTheme.headlineSmall,
+                )),
+          ),
           Expanded(
             flex: 10,
             child: ListView.builder(
